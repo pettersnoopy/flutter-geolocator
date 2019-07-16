@@ -89,6 +89,11 @@ class Geolocator {
           GeolocationPermission.location}) async {
     final PermissionStatus permission = await _getLocationPermission(locationPermissionLevel, ignoreLocationService);
 
+    final locationServerStatus = await PermissionHandler().checkServiceStatus(toPermissionGroup(locationPermissionLevel));
+    if (locationServerStatus != ServiceStatus.enabled) {
+      return null;
+    }
+
     if (permission == PermissionStatus.granted) {
       final LocationOptions locationOptions = LocationOptions(
           accuracy: desiredAccuracy,
@@ -122,6 +127,11 @@ class Geolocator {
       GeolocationPermission locationPermissionLevel =
           GeolocationPermission.location}) async {
     final PermissionStatus permission = await _getLocationPermission(locationPermissionLevel, ignoreLocationService);
+
+    final locationServerStatus = await PermissionHandler().checkServiceStatus(toPermissionGroup(locationPermissionLevel));
+    if (locationServerStatus != ServiceStatus.enabled) {
+      return null;
+    }
 
     if (permission == PermissionStatus.granted) {
       final LocationOptions locationOptions = LocationOptions(
