@@ -118,9 +118,10 @@ class Geolocator {
   /// When no position is available, null is returned.
   Future<Position> getLastKnownPosition(
       {LocationAccuracy desiredAccuracy = LocationAccuracy.best,
+        bool ignoreLocationService = true,
       GeolocationPermission locationPermissionLevel =
           GeolocationPermission.location}) async {
-    final PermissionStatus permission = await _getLocationPermission(locationPermissionLevel);
+    final PermissionStatus permission = await _getLocationPermission(locationPermissionLevel, ignoreLocationService);
 
     if (permission == PermissionStatus.granted) {
       final LocationOptions locationOptions = LocationOptions(
@@ -165,9 +166,10 @@ class Geolocator {
   /// options, default values will be used for each setting.
   Stream<Position> getPositionStream(
       [LocationOptions locationOptions = const LocationOptions(),
+      bool ignoreLocationService = true,
       GeolocationPermission locationPermissionLevel =
           GeolocationPermission.location]) async* {
-    final PermissionStatus permission = await _getLocationPermission(locationPermissionLevel);
+    final PermissionStatus permission = await _getLocationPermission(locationPermissionLevel, ignoreLocationService);
 
     if (permission == PermissionStatus.granted) {
       _onPositionChanged ??= _eventChannel
